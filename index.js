@@ -17,7 +17,7 @@ function writingDate(){
 }
 writingDate();
 
-const apiKey = '7c6d0adfdcba86dcedd7b766663a03a5';
+const apiKey = process.env.VITE_API_KEY;
 
 async function displayExample(){
     try{
