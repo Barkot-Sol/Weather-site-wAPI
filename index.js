@@ -17,15 +17,12 @@ function writingDate(){
 }
 writingDate();
 
-const apiKey = process.env.VITE_API_KEY;
-
 async function displayExample(){
     try{
         const promises = popularCities.map(city => 
-                fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`)
-                .then(res => res.json())
-            );
-
+            fetch(`/.netlify/functions/weather?city=${city}`)
+            .then(res => res.json())
+        );
         const results = await Promise.all(promises);
 
         results.forEach(data => {
@@ -54,7 +51,7 @@ async function searching(e){
     e.preventDefault();
 
     const searchEL = document.getElementById("search").value;
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${searchEL}&appid=${apiKey}&units=metric`;
+    const url = `/.netlify/functions/weather?city=${searchEL}`;
 
     try {
         const res = await fetch(url);
