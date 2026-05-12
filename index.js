@@ -12,7 +12,7 @@ searchingEL.addEventListener("submit", searching);
 function writingDate(){
     const date = new Date();
     console.log(date);
-    let output = `<p>${weekday[date.getDay()]}, ${months[date.getMonth()]}-${date.getDate()}-${date.getFullYear()}</p>`
+    let output = `<p>${weekday[date.getDay()-1]}, ${months[date.getMonth()]}-${date.getDate()}-${date.getFullYear()}</p>`
     dateEL.innerHTML = output;
 }
 writingDate();
@@ -35,6 +35,12 @@ async function displayExample(){
                 <h3>${data.name} - ${data.main.temp}°C</h3>
                 <p>${data.main.temp_min}°C (min) / ${data.main.temp_max}°C (max)</p>
             `;
+
+            article.addEventListener('click', () => {
+                document.getElementById('search').value = data.name;
+                searchingEL.dispatchEvent(new Event('submit' , {bubbles:true}));
+            });
+
             containerEL.appendChild(article);
         });
 
@@ -63,8 +69,21 @@ async function searching(e){
         document.querySelector('.weather-output').style.display = 'block';
         titleDivEL.style.display = 'none';
 
+        const bg = getBackground(data.weather[0].description);
+        document.body.style.backgroundImage = `url('images/${bg}')`;
+        
 
     } catch(error) {
         console.log('Error:', error);
     }
+}
+
+function getBackground(description){
+    if(description.includes('thunderstorm')) return 'thunderstorm.jpg';
+    if(description.includes('drizzle'))      return 'drizzle.jpg';
+    if(description.includes('rain'))         return 'rain.jpg';
+    if(description.includes('snow'))         return 'snow.jpg';
+    if(description.includes('clear'))        return 'clear.jpg';
+    if(description.includes('cloud'))        return 'cloudy.jpg';
+    return 'default.jpg';
 }
